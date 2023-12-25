@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Orderinput from '../../components/Orderinput'
 import Feather from 'react-native-vector-icons/Feather';
+import { horizontalScale, verticalScale } from '../../Constant/Metrics';
 // import Slider from 'react-native-slider';
 
 export default function MyOrder({ navigation }) {
@@ -10,23 +11,15 @@ export default function MyOrder({ navigation }) {
   // }
   return (
     <View>
-      {/* <View style={{ width: "100%", height: 50, backgroundColor: 'white', padding: 10, flexDirection: 'row' }}>
-        <TouchableOpacity style={{ marginTop: 5 }} onPress={() => ('')}>
-          <Feather name='chevron-left' size={25} color="black" />
-        </TouchableOpacity>
-        <Text style={{ fontSize: 22, marginTop: 1, marginLeft: 110, color: 'black' }}>My Orders</Text>
-        <TouchableOpacity style={{ marginTop: 5, marginLeft: 124 }} onPress={() => ('')}>
-          <Feather name='search' size={20} color="black" />
-        </TouchableOpacity>
-      </View> */}
-      <View style={{ width: "100%", height: 40, marginTop : 10,backgroundColor: 'white', padding: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <TouchableOpacity style={{ width: '30%', height: '90%', borderRadius: 15, backgroundColor: 'black', padding: 5, marginLeft: 10 }}>
+      
+      <View style={{ width: "100%", height: verticalScale (45), marginTop : verticalScale (10),backgroundColor: 'white', padding: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <TouchableOpacity style={{ width: '30%', height: '90%', borderRadius: 15, backgroundColor: 'black', padding: 5, marginLeft: horizontalScale (10) }}>
           <Text style={{ textAlign: 'center', color: 'white' }}>Delivered</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ width: '30%', height: '90%', borderRadius: 15, backgroundColor: 'white', padding: 5, marginLeft: 10 }}>
+        <TouchableOpacity style={{ width: '30%', height: '90%', borderRadius: 15, backgroundColor: 'white', padding: 5, marginLeft: horizontalScale (10) }}>
           <Text style={{ textAlign: 'center', color: 'black' }}>Processing</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ width: '30%', height: '90%', borderRadius: 15, backgroundColor: 'white', padding: 5, marginLeft: 10 }}>
+        <TouchableOpacity style={{ width: '30%', height: '90%', borderRadius: 15, backgroundColor: 'white', padding: 5, marginLeft:horizontalScale (10) }}>
           <Text style={{ textAlign: 'center', color: 'black' }}>Cancelled</Text>
         </TouchableOpacity>
       </View>

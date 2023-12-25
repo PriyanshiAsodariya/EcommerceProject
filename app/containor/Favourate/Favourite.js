@@ -1,11 +1,12 @@
 import { View,Text,ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import FavouriteCard from '../../components/card/FavouriteCard'
+import { horizontalScale, moderateScale, verticalScale } from '../../Constant/Metrics'
 
 export default function Favourate({navigation}) {
   return (
     <ScrollView>
-      <Text style = {{color :'black' , marginHorizontal : 16 ,fontSize : 35 , fontWeight : '500' , marginTop :50}}>Favourites</Text>
+      <Text style = {{color :'black' , marginHorizontal :horizontalScale (16) ,fontSize : moderateScale (35) , fontWeight : '500' , marginTop : verticalScale( 50)}}>Favourites</Text>
       <FavouriteCard 
         img={require('../../../assets/Images/pullover.jpg')}
         color="White"

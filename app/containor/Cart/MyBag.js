@@ -4,6 +4,7 @@ import React from 'react'
 import Feather from 'react-native-vector-icons/Feather';
 import AppButton from '../../components/Button/AppButton';
 import BagCard from '../../components/card/BagCard';
+import { horizontalScale, moderateScale, verticalScale } from '../../Constant/Metrics';
 
 export default function MyBag({navigation}) {
 
@@ -12,7 +13,7 @@ export default function MyBag({navigation}) {
   }
   return (
     <View>
-      <Text style ={{color :'black' , fontSize : 40 , fontWeight : '500',marginHorizontal : 16 , marginTop :50}}>My Bag</Text>
+      <Text style ={{color :'black' , fontSize : moderateScale (40) , fontWeight : '500',marginHorizontal : horizontalScale(16) , marginTop :verticalScale (50)}}>My Bag</Text>
       <ScrollView>
         <BagCard
           imgurl={require('../../../assets/Images/pullover.jpg')}
@@ -41,23 +42,23 @@ export default function MyBag({navigation}) {
       </ScrollView>
       <View style={{flexDirection:'row'}}>
       <TextInput
-        style={{ width: 295,height: 40,marginLeft:20,marginTop:20,backgroundColor:"white",borderRadius:10,shadowOpacity: 0.10,
+        style={{ width:  horizontalScale(295),height: verticalScale(40),marginLeft: horizontalScale(20),marginTop: verticalScale(20),backgroundColor:"white",borderRadius:10,shadowOpacity: 0.10,
         shadowRadius: 30,elevation: 4 }}
         placeholder="Enter Your Promo Code"
         keyboardType="numeric"
         placeholderTextColor="lightgrey"
 
       />
-      <TouchableOpacity style={{width:40,height:40,backgroundColor:'black',borderRadius:100,marginTop:20,padding:10}}>
+      <TouchableOpacity style={{width:horizontalScale( 40),height: verticalScale(40),backgroundColor:'black',borderRadius:100,marginTop: verticalScale(20),padding:10}}>
           <Feather name='arrow-right' size={20} color="white" />
       </TouchableOpacity>
       </View>
 
-      <View style={{flexDirection:'row',marginTop:30,marginLeft:20,}}>
-          <Text style={{fontSize:15,marginTop:5 , color :'lightgrey'}}>Total Amount:</Text>
-          <Text style={{fontSize:20,marginLeft:190,color:'black'}}>102$</Text>
+      <View style={{flexDirection:'row',marginTop: verticalScale (30),marginLeft: horizontalScale(20),}}>
+          <Text style={{fontSize: moderateScale(15),marginTop:verticalScale(5) , color :'lightgrey'}}>Total Amount:</Text>
+          <Text style={{fontSize: moderateScale(20),marginLeft: horizontalScale(190),color:'black'}}>102$</Text>
       </View>
-      <View style={{marginTop:10}}>
+      <View style={{marginTop: verticalScale(10)}}>
       <AppButton 
           titel="CHECK OUT"
           onPress={()=>HandleAction()}          
