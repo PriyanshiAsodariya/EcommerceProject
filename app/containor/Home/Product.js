@@ -39,7 +39,7 @@ export default function Product({ navigation }) {
 
           <TouchableOpacity onPress={() => navigation.navigate('ProductDetails')}>
             <Card
-              imguri={require('../../../assets/Images/longDress.jpg')}
+              imguri={require('../../../assets/Images/fashion.jpg')}
               title="Dorothy Perkins"
               mainTitle='Evening Dreese'
               Dollar={'12$'}

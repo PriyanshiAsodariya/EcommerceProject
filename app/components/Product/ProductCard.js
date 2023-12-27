@@ -2,13 +2,14 @@ import { View, Text, StyleSheet, Image, Pressable, TouchableOpacity } from 'reac
 import React from 'react'
 
 export default function Card({imguri, title, mainTitle, Dollar, discount, disColor }) {
+    // console.log(imguri.toString().substring(0, 8));
     return (
       
             <View style={style.parentBox}>
                 <View style={style.box}>
                     <Image
                         style={style.image1}
-                        source={imguri}
+                        source={{uri: imguri.toString().substring(0, 8) !== 'https://' ? 'https://www.cdparque.com/img/sections/productos/pepsi.png' : imguri }}
                     />
                     <Pressable style={{ margin: 6, padding: 2, backgroundColor: disColor, width: 32, position: 'absolute', borderRadius: 10 }}>
                         <Text style={{ fontSize: 12, color: 'white', textAlign: 'center' }}>{discount}</Text>

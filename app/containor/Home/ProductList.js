@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity, Image, Modal } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ShoppingButton from '../../components/Button/ShoppingButton'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProductCard from '../../components/Product/ProductCard';
@@ -8,7 +8,7 @@ import Card from '../../components/card/Card'
 
 
 export default function ProductList({ navigation }) {
-
+  const [products, setProducts] = useState([]);
   const [modal, setmodel] = useState(false)
 
   const handlepress = () => {
@@ -18,10 +18,26 @@ export default function ProductList({ navigation }) {
     setmodel(false)
   }
 
+
+  useEffect(() => {
+    Getdata();
+  }, [])
+
+  const Getdata = async () => {
+    const response = await fetch('https://api.escuelajs.co/api/v1/products')
+    const pdata = await response.json();
+    console.log(pdata);
+
+    setProducts(pdata);
+  }
+
+
+
+
+
   return (
     <View>
       <ScrollView>
-
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <View style={{ flexDirection: 'row', }}>
             <ShoppingButton
@@ -67,9 +83,9 @@ export default function ProductList({ navigation }) {
           transparent={true}
           visible={modal}
         >
-          <View style={{ width: '100%', marginTop: verticalScale(440),borderRadius : 50, backgroundColor: 'white' }}>
-            <TouchableOpacity onPress={handlecross} style = {{marginLeft : 150}}>
-              <MaterialCommunityIcons name='minus-thick' size={45} color={'grey'}/>
+          <View style={{ width: '100%', marginTop: verticalScale(440), borderRadius: 50, backgroundColor: 'white' }}>
+            <TouchableOpacity onPress={handlecross} style={{ marginLeft: 150 }}>
+              <MaterialCommunityIcons name='minus-thick' size={45} color={'grey'} />
             </TouchableOpacity>
 
             <TouchableOpacity style={{ width: '100%', height: verticalScale(55) }}>
@@ -91,17 +107,26 @@ export default function ProductList({ navigation }) {
         </Modal>
 
         <View style={{ flexDirection: 'row', marginHorizontal: 16, justifyContent: 'space-between', marginTop: 6, flex: 1, flexWrap: 'wrap' }}>
-          
-          
 
-          
+          {
+            products.map((v, i) => (
+              <TouchableOpacity onPress={() => navigation.navigate('ProductDetails')}>
+                <ProductCard
+                  imguri={v.images[0]}
+                  title={v.description}
+                  mainTitle={v.title}
+                  Dollar={v.price}
+                />
+              </TouchableOpacity>
+            ))
+          }
+
           <TouchableOpacity onPress={() => navigation.navigate('ProductDetails')}>
             <ProductCard
               imguri={require('../../../assets/Images/longDress.jpg')}
               title="Dorothy Perkins"
               mainTitle='Evening Dreese'
               Dollar={'12$'}
-              
             />
           </TouchableOpacity>
 
@@ -122,7 +147,7 @@ export default function ProductList({ navigation }) {
               title="Dorothy Perkins"
               mainTitle='Evening Dreese'
               Dollar={'12$'}
-              
+
             />
           </TouchableOpacity>
 
@@ -138,7 +163,7 @@ export default function ProductList({ navigation }) {
           </TouchableOpacity>
 
 
-          
+
 
 
         </View>
