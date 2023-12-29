@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet, Image, Pressable, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-export default function Card({imguri, title, mainTitle, Dollar, discount, disColor }) {
+export default function Card({imguri, title, mainTitle, Dollar, discount, disColor,key }) {
     // console.log(imguri.toString().substring(0, 8));
     return (
       
-            <View style={style.parentBox}>
+            <View>
                 <View style={style.box}>
                     <Image
                         style={style.image1}
@@ -17,7 +17,7 @@ export default function Card({imguri, title, mainTitle, Dollar, discount, disCol
 
                 </View>
                 <View style={style.deatilBox}>
-                    <Text style={style.title}>{title}</Text>
+                    {/* <Text style={style.title}>{title}</Text> */}
                     <Text style={style.mainTitle}>{mainTitle}</Text>
                     <Text style={style.Dollar}> {Dollar}</Text>
                 </View>
@@ -33,9 +33,6 @@ const style = StyleSheet.create({
         borderRadius :8, 
         resizeMode: 'cover'
     },
-    parentBox: {
-        // marginHorizontal: 16,
-    },
     box: {
         width: 150,
         height: 190,
@@ -43,7 +40,6 @@ const style = StyleSheet.create({
         borderRadius: 6,
         backgroundColor: '#DADADA',
         position: 'relative',
-
     },
     deatilBox: {
         marginTop: 10,

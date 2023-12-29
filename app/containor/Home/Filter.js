@@ -1,8 +1,10 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import { horizontalScale, verticalScale } from '../../Constant/Metrics'
 import ColorCard from '../../components/ColorDesign/ColorCard'
 import SizeCard from '../../components/SizeCard/SizeCard'
+
+// import RangeSlider from 'react-native-range-slider'
 
 import CheckBox from 'react-native-check-box'
 
@@ -11,9 +13,9 @@ export default function Filter() {
   return (
     <ScrollView>
       <View style={{ marginHorizontal: horizontalScale(16), flex: 1, backgroundColor: 'white' }}>
-        <Text style={{ paddingTop: verticalScale(8), fontWeight: 'bold', fontSize: 15, paddingBottom: verticalScale(8), backgroundColor: '#f1f1f1' }}>Price range</Text>
+        <Text style={style.price}>Price range</Text>
 
-        <Text style={{ paddingTop: verticalScale(8), fontWeight: 'bold', fontSize: 15, paddingBottom: verticalScale(8), backgroundColor: '#f1f1f1' }}>Colors</Text>
+        <Text style={style.color}>Colors</Text>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', }}>
           <ColorCard
@@ -42,7 +44,7 @@ export default function Filter() {
           />
         </View>
 
-        <Text style={{ marginTop: verticalScale(8), paddingTop: verticalScale(8), fontWeight: 'bold', fontSize: 15, marginBottom: verticalScale(8), backgroundColor: '#f1f1f1', paddingBottom: verticalScale(8) }}>Sizes</Text>
+        <Text style={style.size}>Sizes</Text>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', }}>
           <SizeCard
@@ -67,46 +69,8 @@ export default function Filter() {
           />
         </View>
 
-        <Text style={{ marginTop: verticalScale(8), paddingTop: verticalScale(8), fontWeight: 'bold', fontSize: 15, marginBottom: verticalScale(8), backgroundColor: '#f1f1f1', paddingBottom: verticalScale(8) }}>Brands</Text>
+        <Text style={style.brand}>Brands</Text>
 
-        {/* <View>
-          <BrandCard
-            title='adidas'
-            onPress={() => console.log("adidas")}
-          />
-          <BrandCard
-            title='adidas Originals'
-            onPress={() => console.log("adidas originals")}
-          />
-          <BrandCard
-            title='Blend'
-            onPress={() => console.log("Blend")}
-          />
-          <BrandCard
-            title='Boutique Moschino'
-            onPress={() => console.log("Boutique Moschino")}
-          />
-          <BrandCard
-            title='Champion'
-            onPress={() => console.log("champion")}
-          />
-          <BrandCard
-            title='Diesel'
-            onPress={() => console.log("diesel")}
-          />
-          <BrandCard
-            title='Jack & Jones'
-            onPress={() => console.log("Jack & Jones")}
-          />
-          <BrandCard
-            title='Naf Naf'
-            onPress={() => console.log("Naf Naf")}
-          />
-          <BrandCard
-            title='s.Oliver'
-            onPress={() => console.log("s.Oliver")}
-          />
-        </View> */}
 
         <View>
           <CheckBox
@@ -160,17 +124,17 @@ export default function Filter() {
             leftText={"s.Oliver"}
           />
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', backgroundColor: "#f1f1f1", marginTop: verticalScale(10), paddingTop: verticalScale(10), paddingBottom: verticalScale(20) }}>
+        <View style={style.parentbtn}>
           <TouchableOpacity onPress={() => console.log("discard")}
-            style={{ paddingTop: verticalScale(8), fontWeight: 'bold', fontSize: 15, paddingBottom: verticalScale(8), backgroundColor: 'black', borderWidth: 1, width: 120, borderRadius: 15 }}
+            style={style.btn}
           >
-            <Text style={{ color: 'white', alignSelf: 'center' }}>Discard</Text>
+          <Text style={style.btntxt}>Discard</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => console.log("discard")}
-            style={{ paddingTop: verticalScale(8), fontWeight: 'bold', fontSize: 15, paddingBottom: verticalScale(8), backgroundColor: 'black', borderWidth: 1, width: 120, borderRadius: 15 }}
+            style={style.btn}
           >
-            <Text style={{ color: 'white', alignSelf: 'center' }}>Apply</Text>
+            <Text style={style.btntxt}>Apply</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -178,3 +142,60 @@ export default function Filter() {
 
   )
 }
+
+const style = StyleSheet.create({
+  size: {
+    marginTop: verticalScale(8),
+    paddingTop: verticalScale(8),
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginBottom: verticalScale(8),
+    backgroundColor: '#f1f1f1',
+    paddingBottom: verticalScale(8)
+  },
+  color :{
+    paddingTop: verticalScale(8), 
+    fontWeight: 'bold',
+     fontSize: 15, 
+    paddingBottom: verticalScale(8), 
+    backgroundColor: '#f1f1f1' 
+  },
+  price : {
+    paddingTop: verticalScale(8),
+     fontWeight: 'bold', 
+     fontSize: 15,
+      paddingBottom: verticalScale(8),
+      backgroundColor: '#f1f1f1' 
+  },
+  brand: {
+    marginTop: verticalScale(8),
+    paddingTop: verticalScale(8),
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginBottom: verticalScale(8),
+    backgroundColor: '#f1f1f1',
+    paddingBottom: verticalScale(8)
+  },
+  parentbtn: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: "#f1f1f1",
+    marginTop: verticalScale(10),
+    paddingTop: verticalScale(10),
+    paddingBottom: verticalScale(20)
+  },
+  btn: {
+    paddingTop: verticalScale(8),
+    fontWeight: 'bold',
+    fontSize: 15, paddingBottom: verticalScale(8),
+    backgroundColor: 'black',
+    borderWidth: 1,
+    width: 120,
+    borderRadius: 15
+  },
+  btntxt: {
+    color: 'white',
+    alignSelf: 'center'
+  },
+ 
+})

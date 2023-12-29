@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, Image, Modal } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, Image, Modal, StyleSheet, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import ShoppingButton from '../../components/Button/ShoppingButton'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,8 +8,14 @@ import Card from '../../components/card/Card'
 
 
 export default function ProductList({ navigation }) {
+  const [category, setcategory] = useState('')
+  const [search, setsearch] = useState('')
+  const [sort, setsort] = useState('az');
   const [products, setProducts] = useState([]);
   const [modal, setmodel] = useState(false)
+
+
+  // console.log(category)
 
   const handlepress = () => {
     setmodel(true)
@@ -18,6 +24,7 @@ export default function ProductList({ navigation }) {
     setmodel(false)
   }
 
+  let arr = []
 
   useEffect(() => {
     Getdata();
@@ -31,89 +38,137 @@ export default function ProductList({ navigation }) {
     setProducts(pdata);
   }
 
+  const searchsortdata = () => {
+
+    let fdata = products.filter((v) => (
+      v.title.toLowerCase().includes(search.toLowerCase()) ||
+      v.title.toLowerCase().includes(search.toLowerCase()) ||
+      v.price.toString().includes(search.toLowerCase())
+
+    ));
+
+    if (category !== '') {
+      fdata = fdata.filter((v) => category === v.category.name)
+    }
 
 
+    fdata = fdata.sort((a, b) => {
+      if (sort === 'lh') {
+        return a.price - b.price;
+      } else if (sort === 'hl') {
+        return b.price - a.price;
+      } else if (sort === 'az') {
+        return a.title.localeCompare(b.title)
+      } else if (sort === 'za') {
+        return b.title.localeCompare(a.title)
+      }
+    })
 
+    return fdata;
+  }
+
+  const fdata = searchsortdata();
 
   return (
     <View>
-      <ScrollView>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <View style={{ flexDirection: 'row', }}>
-            <ShoppingButton
-              title='T-Shirts'
-              onPress={() => console.log("t shirts")}
-            />
-            <ShoppingButton
-              title='Crop tops'
-              onPress={() => console.log("Crop tops")}
-            />
-            <ShoppingButton
-              title='Blouses'
-              onPress={() => console.log("Blouses")}
-            />
-            <ShoppingButton
-              title='Skirts'
-              onPress={() => console.log("Skirts")}
-            />
-            <ShoppingButton
-              title='Dresses'
-              onPress={() => console.log("Dresses")}
-            />
-          </View>
-        </ScrollView>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <View style={{ flexDirection: 'row',height : 50 }} >
+          {
+            products.map((v) => {
+              if (!arr.includes(v.category.name)) {
+                arr.push(v.category.name)
+              }
+            })
+          }
 
-        <View style={{ flexDirection: 'row', marginTop: 15, marginHorizontal: 16, justifyContent: 'space-between' }}>
+          <ShoppingButton
+            // key={v.id}
+            title={'All'}
+            onPress={() => setcategory('')}
+          />
 
-          <TouchableOpacity style={{ flexDirection: 'row', }} onPress={() => navigation.navigate('Filter')}>
-            <MaterialCommunityIcons name='filter-variant' color={'black'} size={25} />
-            <Text style={{ marginLeft: 8, color: 'black' }}>Filter</Text>
+          {
+            arr.map((v) => {
+              return (
+                <ShoppingButton
+                  key={v.id}
+                  title={v}
+                  onPress={() => setcategory(v)}
+                />
+              )
+            })
+          }
+
+
+        </View>
+      </ScrollView>
+
+      <View style={{ flexDirection: 'row', marginTop: 10, marginHorizontal: 16, justifyContent: 'space-between' }}>
+
+        <TouchableOpacity style={{ flexDirection: 'row', }} onPress={() => navigation.navigate('Filter')}>
+          <MaterialCommunityIcons name='filter-variant' color={'black'} size={25} />
+          <Text style={{ marginLeft: 8, color: 'black' }}>Filter</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={{ flexDirection: 'row', }} onPress={() => handlepress()}>
+          <MaterialCommunityIcons name='swap-vertical' color={'black'} size={25} />
+          <Text style={{ marginLeft: 2, color: 'black' }}>{sort === 'az' ? 'A to Z' : sort === 'za' ? 'Z to A' : sort === 'lh' ? 'Low to high' : sort === 'hl' ? 'high to low' : 'A to Z'}</Text>
+        </TouchableOpacity>
+
+
+        <TouchableOpacity style={{ flexDirection: 'row' }}>
+          <MaterialCommunityIcons name='view-list' color={'black'} size={25} />
+        </TouchableOpacity>
+      </View>
+
+      <TextInput
+        style={{ borderBottomWidth: 2, marginHorizontal: 16 }}
+        placeholder='Search...'
+        onChangeText={setsearch}
+
+      />
+
+
+
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modal}
+      >
+        <View style={{ width: '100%', marginTop: verticalScale(440), borderRadius: 50, backgroundColor: 'white' }}>
+          <TouchableOpacity onPress={handlecross} style={{ marginLeft: 150 }}>
+            <MaterialCommunityIcons name='minus-thick' size={45} color={'grey'} />
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: 'row', }} onPress={() => handlepress()}>
-            <MaterialCommunityIcons name='swap-vertical' color={'black'} size={25} />
-            <Text style={{ marginLeft: 8, color: 'black' }}>Popular</Text>
+          <TouchableOpacity onPress={() => { setsort('popular'), setmodel(false) }} style={style.container}>
+            <Text style={style.text}>Popular</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: 'row' }}>
-            <MaterialCommunityIcons name='view-list' color={'black'} size={25} />
+          <TouchableOpacity onPress={() => { setsort('az'), setmodel(false) }} style={style.container}>
+            <Text style={style.text}>A to Z</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { setsort('za'), setmodel(false) }} style={style.container}>
+            <Text style={style.text}>Z to A</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { setsort('lh'), setmodel(false) }} style={style.container}>
+            <Text style={style.text}>Price:low to high</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { setsort('hl'), setmodel(false) }} style={style.container}>
+            <Text style={style.text}>Price:high to low</Text>
           </TouchableOpacity>
         </View>
+      </Modal>
+      
 
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modal}
-        >
-          <View style={{ width: '100%', marginTop: verticalScale(440), borderRadius: 50, backgroundColor: 'white' }}>
-            <TouchableOpacity onPress={handlecross} style={{ marginLeft: 150 }}>
-              <MaterialCommunityIcons name='minus-thick' size={45} color={'grey'} />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={{ width: '100%', height: verticalScale(55) }}>
-              <Text style={{ fontSize: moderateScale(22), marginTop: verticalScale(14), marginLeft: horizontalScale(20), color: 'black' }}>Popular</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ width: '100%', height: verticalScale(55) }}>
-              <Text style={{ fontSize: moderateScale(22), marginTop: verticalScale(14), marginLeft: horizontalScale(20), color: 'black' }}>Newest</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ width: '100%', height: verticalScale(55) }}>
-              <Text style={{ fontSize: moderateScale(22), marginTop: verticalScale(14), marginLeft: horizontalScale(20), color: 'black' }}>Custom Review</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ width: '100%', height: verticalScale(55) }}>
-              <Text style={{ fontSize: moderateScale(22), marginTop: verticalScale(14), marginLeft: horizontalScale(20), color: 'black' }}>Price:low to high</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ width: '100%', height: verticalScale(55) }}>
-              <Text style={{ fontSize: moderateScale(22), marginTop: verticalScale(14), marginLeft: horizontalScale(20), color: 'black' }}>Price:high to low</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-
+      <ScrollView>
         <View style={{ flexDirection: 'row', marginHorizontal: 16, justifyContent: 'space-between', marginTop: 6, flex: 1, flexWrap: 'wrap' }}>
 
           {
-            products.map((v, i) => (
-              <TouchableOpacity onPress={() => navigation.navigate('ProductDetails')}>
+            fdata.map((v, i) => (
+              <TouchableOpacity onPress={() => navigation.navigate('ProductDetails',{id:v.id})}>
                 <ProductCard
+                  key={v.id}
                   imguri={v.images[0]}
-                  title={v.description}
+                  // title={v.description}
                   mainTitle={v.title}
                   Dollar={v.price}
                 />
@@ -121,54 +176,22 @@ export default function ProductList({ navigation }) {
             ))
           }
 
-          <TouchableOpacity onPress={() => navigation.navigate('ProductDetails')}>
-            <ProductCard
-              imguri={require('../../../assets/Images/longDress.jpg')}
-              title="Dorothy Perkins"
-              mainTitle='Evening Dreese'
-              Dollar={'12$'}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('ProductDetails')}>
-            <ProductCard
-              imguri={require('../../../assets/Images/mens2.jpg')}
-              title="Dorothy Perkins"
-              mainTitle='Evening Dreese'
-              Dollar={'12$'}
-              discount='20%'
-              disColor='#DB3022'
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('ProductDetails')}>
-            <ProductCard
-              imguri={require('../../../assets/Images/hoodie.jpg')}
-              title="Dorothy Perkins"
-              mainTitle='Evening Dreese'
-              Dollar={'12$'}
-
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('ProductDetails')}>
-            <ProductCard
-              imguri={require('../../../assets/Images/pullover.jpg')}
-              title="Dorothy Perkins"
-              mainTitle='Evening Dreese'
-              Dollar={'12$'}
-              discount='30%'
-              disColor='#DB3022'
-            />
-          </TouchableOpacity>
-
-
-
-
-
         </View>
 
       </ScrollView>
-    </View>
+    </View >
   )
 }
+
+const style = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: verticalScale(55),
+  },
+  text: {
+    fontSize: moderateScale(22),
+    marginTop: verticalScale(14),
+    marginLeft: horizontalScale(20),
+    color: 'black'
+  }
+})

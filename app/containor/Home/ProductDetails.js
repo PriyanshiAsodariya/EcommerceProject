@@ -1,15 +1,49 @@
 import { View, Text, StatusBar, ScrollView, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppButton from '../../components/Button/AppButton';
 import LikeCard from '../../components/card/LikeCard';
 import { horizontalScale, moderateScale, verticalScale } from '../../Constant/Metrics';
+import { useRoute } from '@react-navigation/native';
 
 export default function ProductDetails({ navigation }) {
   const [model, Setmodel] = useState(false)
+  const [products, setProducts] = useState([]);
   const [colormodel, Setcolormodel] = useState(false)
+
+
+  const route = useRoute()
+  const id = route.params?.id
+  console.log(id);
+
+  useEffect(() => {
+    Getdata();
+  }, [])
+
+
+  const Getdata = async () => {
+    const response = await fetch('https://api.escuelajs.co/api/v1/products')
+    const pdata = await response.json();
+    console.log(pdata);
+
+    setProducts(pdata);
+  }
+
+
+
+
+  let fdata = products.filter((item) => item.id == id)
+  console.log(fdata[0] && fdata[0].images);
+
+  // return fdata;
+
+
+
+
+
+
   const handlepress = () => {
     Setmodel(true)
   }
@@ -28,46 +62,52 @@ export default function ProductDetails({ navigation }) {
         backgroundColor='#FFFFFF'
         barStyle='dark-content'
       />
+
+
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <View style={style.imagebox}>
-          <Image
-            source={require('../../../assets/Images/longDress.jpg')}
-            style={{ width: '100%', height: '100%' }}
-          />
-        </View>
-        <View style={style.imagebox}>
-          <Image
-            source={require('../../../assets/Images/longDress3.jpg')}
-            style={{ width: '100%', height: '100%' }}
-          />
-        </View>
-        <View style={style.imagebox}>
-          <Image
-            source={require('../../../assets/Images/longDress1.jpg')}
-            style={{ width: '100%', height: '100%' }}
-          />
-        </View>
-        
+
+        {
+          fdata[0] && fdata[0].images.map((v) => (
+            <>
+              <View style={style.imagebox}>
+                <Image
+                  source={{ uri: v }}
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </View>
+
+            </>
+          ))
+        }
+
+
       </ScrollView>
+
+
 
       <View style={style.disbox}>
         <View style={style.btnbox}>
           <TouchableOpacity style={style.sizebox} onPress={() => handlepress()}>
-            <Text style={{ marginLeft: horizontalScale (30), color: 'black', fontSize: moderateScale (15) }}>Size</Text>
+            <Text style={{ marginLeft: horizontalScale(30), color: 'black', fontSize: moderateScale(15) }}>Size</Text>
           </TouchableOpacity>
           <TouchableOpacity style={style.sizebox} onPress={() => HandleColorPress()}>
-            <Text style={{ marginLeft: horizontalScale (25), color: 'black', fontSize: moderateScale (15) }}>Color</Text>
+            <Text style={{ marginLeft: horizontalScale(25), color: 'black', fontSize: moderateScale(15) }}>Color</Text>
           </TouchableOpacity>
+
+
+
           <TouchableOpacity style={style.likebox}>
-          <Feather name="heart" color='black' size={20}/>
+            <Feather name="heart" color='black' size={20} />
           </TouchableOpacity>
+
+
         </View>
         <View style={style.textbox}>
-          <View ><Text style={{ fontSize: moderateScale (30), color: 'black' }}>H&M</Text></View>
-          <View style={{ marginLeft: 175 }}><Text style={{ fontSize:  moderateScale (30), color: 'black' }}>$19.99</Text></View>
+          <View ><Text style={{ fontSize: moderateScale(30), color: 'black' }}>H&M</Text></View>
+          <View style={{ marginLeft: 175 }}><Text style={{ fontSize: moderateScale(30), color: 'black' }}>$19.99</Text></View>
         </View>
         <Text style={{ color: 'grey' }}>Long White Dress</Text>
-        <View style={{ flexDirection: 'row', marginTop:verticalScale(5) }}>
+        <View style={{ flexDirection: 'row', marginTop: verticalScale(5) }}>
           <MaterialIcons name="star" color='#FFBA49' size={16} />
           <MaterialIcons name="star" color='#FFBA49' size={16} />
           <MaterialIcons name="star" color='#FFBA49' size={16} />
@@ -76,26 +116,26 @@ export default function ProductDetails({ navigation }) {
           <Text style={{ color: 'grey' }}>(10)</Text>
         </View>
 
-        <Text style={{ fontSize: moderateScale (16), color: 'black', marginTop: 5 }}>Long dress in soft cottoon jerseyy with decoorative buttons down the front and a wide, frill-trimmed square neckline with concealed elastication. Elasticated seam under the bust and short puff sleeves with a small frill trim.</Text>
+        <Text style={{ fontSize: moderateScale(16), color: 'black', marginTop: 5 }}>Long dress in soft cottoon jerseyy with decoorative buttons down the front and a wide, frill-trimmed square neckline with concealed elastication. Elasticated seam under the bust and short puff sleeves with a small frill trim.</Text>
       </View>
-      <View style={{ width: '100%', height: 100, backgroundColor: 'white', padding: 30, marginTop: verticalScale (15) }}>
+      <View style={{ width: '100%', height: 100, backgroundColor: 'white', padding: 30, marginTop: verticalScale(15) }}>
         <AppButton
           titel="ADD TO CART"
           onPress={() => navigation.navigate('Bag')}
         />
       </View>
-      <View style={{ width: '100%', height: verticalScale (50), borderWidth: 0.5, flexDirection: 'row' }}>
-        <View><Text style={{ fontSize:  moderateScale(20), color: 'black', marginTop: verticalScale (15), marginLeft:  horizontalScale (20) }}>Shipping info</Text></View>
-        <View style={{ marginLeft: horizontalScale (195), marginTop: verticalScale (18) }}><MaterialIcons name="chevron-right" color={'black'} size={20} /></View>
+      <View style={{ width: '100%', height: verticalScale(50), borderWidth: 0.5, flexDirection: 'row' }}>
+        <View><Text style={{ fontSize: moderateScale(20), color: 'black', marginTop: verticalScale(15), marginLeft: horizontalScale(20) }}>Shipping info</Text></View>
+        <View style={{ marginLeft: horizontalScale(195), marginTop: verticalScale(18) }}><MaterialIcons name="chevron-right" color={'black'} size={20} /></View>
 
       </View>
-      <View style={{ width: '100%', height: verticalScale (50), borderWidth: 0.5, flexDirection: 'row' }}>
-        <View><Text style={{ fontSize: moderateScale (20), color: 'black', marginTop: verticalScale (15), marginLeft: horizontalScale (20) }}>Support</Text></View>
-        <View style={{ marginLeft: horizontalScale(240), marginTop: verticalScale (18) }}><MaterialIcons name="chevron-right" color={'black'} size={20} /></View>
+      <View style={{ width: '100%', height: verticalScale(50), borderWidth: 0.5, flexDirection: 'row' }}>
+        <View><Text style={{ fontSize: moderateScale(20), color: 'black', marginTop: verticalScale(15), marginLeft: horizontalScale(20) }}>Support</Text></View>
+        <View style={{ marginLeft: horizontalScale(240), marginTop: verticalScale(18) }}><MaterialIcons name="chevron-right" color={'black'} size={20} /></View>
       </View>
-      <Text style={{ fontSize: moderateScale(24), marginLeft: horizontalScale(20), marginTop:  verticalScale(20), color: 'black', fontWeight: 'bold' }}>You can also like this</Text>
+      <Text style={{ fontSize: moderateScale(24), marginLeft: horizontalScale(20), marginTop: verticalScale(20), color: 'black', fontWeight: 'bold' }}>You can also like this</Text>
 
-      <View style={{ width: '100%', height: verticalScale (400), backgroundColor: 'white', marginTop: verticalScale(10) }}>
+      <View style={{ width: '100%', height: verticalScale(400), backgroundColor: 'white', marginTop: verticalScale(10) }}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <LikeCard
             imgurl={require('../../../assets/Images/beautiful-smiling-brunette-girl-pointing-fingers-your-logo-showing-something-center.jpg')}
@@ -128,30 +168,30 @@ export default function ProductDetails({ navigation }) {
           visible={model}
         >
           <View style={style.modlestyle}>
-            <TouchableOpacity style={{ width: horizontalScale (90), height:  verticalScale(7), backgroundColor: 'gray', marginLeft: horizontalScale( 135) }} onPress={() => handleclose()}>
+            <TouchableOpacity style={{ width: horizontalScale(90), height: verticalScale(7), backgroundColor: 'gray', marginLeft: horizontalScale(135) }} onPress={() => handleclose()}>
               <MaterialIcons name='minus' color={'black'} size={40} />
             </TouchableOpacity>
-            <Text style={{ fontSize:  moderateScale(20), color: 'black', marginTop:verticalScale (30), textAlign:'center' }}>Select Size</Text>
+            <Text style={{ fontSize: moderateScale(20), color: 'black', marginTop: verticalScale(30), textAlign: 'center' }}>Select Size</Text>
 
-            <View style={{ width: '100%', height:  verticalScale(150), marginTop: verticalScale( 20) }}>
+            <View style={{ width: '100%', height: verticalScale(150), marginTop: verticalScale(20) }}>
 
               <View style={{ width: '100%', height: verticalScale(30), flexDirection: 'row', justifyContent: 'space-evenly' }}>
                 <TouchableOpacity style={style.size}>
-                  <Text style={{ marginLeft: horizontalScale( 30), color: 'black', fontSize: moderateScale( 15) }}>XS</Text>
+                  <Text style={{ marginLeft: horizontalScale(30), color: 'black', fontSize: moderateScale(15) }}>XS</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={style.size}>
-                  <Text style={{ marginLeft: horizontalScale( 36), color: 'black', fontSize: moderateScale( 15) }}>S</Text>
+                  <Text style={{ marginLeft: horizontalScale(36), color: 'black', fontSize: moderateScale(15) }}>S</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={style.size}>
-                  <Text style={{ marginLeft: horizontalScale( 36), color: 'black', fontSize:moderateScale( 15)  }}>M</Text>
+                  <Text style={{ marginLeft: horizontalScale(36), color: 'black', fontSize: moderateScale(15) }}>M</Text>
                 </TouchableOpacity>
               </View>
-              <View style={{ width: '100%', height: verticalScale (30), flexDirection: 'row', marginTop: verticalScale( 20), justifyContent: 'space-around' }}>
+              <View style={{ width: '100%', height: verticalScale(30), flexDirection: 'row', marginTop: verticalScale(20), justifyContent: 'space-around' }}>
                 <TouchableOpacity style={style.size}>
-                  <Text style={{ marginLeft: horizontalScale (36), color: 'black', fontSize: moderateScale( 15) }}>L</Text>
+                  <Text style={{ marginLeft: horizontalScale(36), color: 'black', fontSize: moderateScale(15) }}>L</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={style.size}>
-                  <Text style={{ marginLeft:horizontalScale (36), color: 'black', fontSize: moderateScale( 15) }}>XL</Text>
+                  <Text style={{ marginLeft: horizontalScale(36), color: 'black', fontSize: moderateScale(15) }}>XL</Text>
                 </TouchableOpacity>
               </View>
               <View style={{ width: '100%', height: 40, borderWidth: 0.5, marginTop: 20, flexDirection: 'row' }}>
@@ -180,7 +220,7 @@ export default function ProductDetails({ navigation }) {
               <MaterialIcons name='minus' color={'black'} size={40} />
             </TouchableOpacity>
 
-            <Text style={{ fontSize: 22, color: 'black',textAlign:'center', marginTop: 20 }}>Select Color</Text>
+            <Text style={{ fontSize: 22, color: 'black', textAlign: 'center', marginTop: 20 }}>Select Color</Text>
 
             <View style={{ flexDirection: 'row', marginTop: 20 }}>
               <TouchableOpacity style={{ width: 40, height: 40, backgroundColor: 'black', borderRadius: 100, marginLeft: 30 }}></TouchableOpacity>
@@ -218,6 +258,11 @@ const style = StyleSheet.create({
     height: 413,
     flexDirection: 'row',
     margin: 10
+  },
+  size:{
+    marginLeft: horizontalScale(30),
+     color: 'black', 
+     fontSize: moderateScale(15) 
   },
   disbox: {
     width: '100%',
@@ -259,7 +304,8 @@ const style = StyleSheet.create({
     borderRadius: 160,
     backgroundColor: 'white',
     padding: 7,
-    paddingRight: 4
+    paddingRight: 4,
+
   },
   textbox: {
     width: "100%",
@@ -289,4 +335,5 @@ const style = StyleSheet.create({
     backgroundColor: 'white',
     padding: 8,
   }
+
 })
