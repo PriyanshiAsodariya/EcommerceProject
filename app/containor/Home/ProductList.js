@@ -5,6 +5,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import ProductCard from '../../components/Product/ProductCard';
 import { horizontalScale, moderateScale, verticalScale } from '../../Constant/Metrics';
 import Card from '../../components/card/Card'
+import { useDispatch, useSelector } from 'react-redux';
+import { getproduct } from '../../redux/slice/ProductSlice';
+import { useRoute } from '@react-navigation/native';
+import { getSubCat } from '../../redux/slice/SubCategorySlice';
 
 
 export default function ProductList({ navigation }) {
@@ -14,8 +18,25 @@ export default function ProductList({ navigation }) {
   const [products, setProducts] = useState([]);
   const [modal, setmodel] = useState(false)
 
+  console.log("ccccccccccccccccccccccccccccccccccc", category);
 
-  // console.log(category)
+  const route = useRoute();
+  const sid = route.params?.id
+  const cid = route.params?.cid
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getproduct())
+    dispatch(getSubCat())
+  }, [])
+
+  const SubCategoryData = useSelector(state => state.subcategory)
+  const productData = useSelector(state => state.Product)
+  // console.log("7777777777777777777777",productData );
+
+
+
 
   const handlepress = () => {
     setmodel(true)
@@ -39,18 +60,18 @@ export default function ProductList({ navigation }) {
   }
 
   const searchsortdata = () => {
+    let fdata;
 
-    let fdata = products.filter((v) => (
-      v.title.toLowerCase().includes(search.toLowerCase()) ||
-      v.title.toLowerCase().includes(search.toLowerCase()) ||
-      v.price.toString().includes(search.toLowerCase())
-
-    ));
-
-    if (category !== '') {
-      fdata = fdata.filter((v) => category === v.category.name)
+    if (category) {
+      fdata = productData.Product.filter((v) => v.SubCategory === category)
+    } else {
+      fdata = productData.Product.filter((v) => v.SubCategory === sid)
     }
-
+    fdata = fdata.filter((v) =>
+      v.Title.toLowerCase().includes(search.toLowerCase()) ||
+      v.description.toLowerCase().includes(search.toLowerCase()) ||
+      v.price.toString().includes(search.toLowerCase())
+    );
 
     fdata = fdata.sort((a, b) => {
       if (sort === 'lh') {
@@ -58,11 +79,16 @@ export default function ProductList({ navigation }) {
       } else if (sort === 'hl') {
         return b.price - a.price;
       } else if (sort === 'az') {
-        return a.title.localeCompare(b.title)
+        return a.Title.localeCompare(b.Title)
       } else if (sort === 'za') {
-        return b.title.localeCompare(a.title)
+        return b.Title.localeCompare(a.Title)
       }
     })
+
+    // if (category === '') {
+    //   setSid(category);
+    // }
+    
 
     return fdata;
   }
@@ -72,14 +98,7 @@ export default function ProductList({ navigation }) {
   return (
     <View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <View style={{ flexDirection: 'row',height : 50 }} >
-          {
-            products.map((v) => {
-              if (!arr.includes(v.category.name)) {
-                arr.push(v.category.name)
-              }
-            })
-          }
+        <View style={{ flexDirection: 'row', height: 50 }} >
 
           <ShoppingButton
             // key={v.id}
@@ -88,17 +107,16 @@ export default function ProductList({ navigation }) {
           />
 
           {
-            arr.map((v) => {
+            SubCategoryData.SubCategory.filter((v) => v.Category === cid).map((v) => {
               return (
                 <ShoppingButton
                   key={v.id}
-                  title={v}
-                  onPress={() => setcategory(v)}
+                  title={v.SubCategory}
+                  onPress={() => setcategory(v.id)}
                 />
               )
             })
           }
-
 
         </View>
       </ScrollView>
@@ -127,10 +145,6 @@ export default function ProductList({ navigation }) {
         onChangeText={setsearch}
 
       />
-
-
-
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -157,32 +171,33 @@ export default function ProductList({ navigation }) {
           </TouchableOpacity>
         </View>
       </Modal>
-      
+
 
       <ScrollView>
-        <View style={{ flexDirection: 'row', marginHorizontal: 16, justifyContent: 'space-between', marginTop: 6, flex: 1, flexWrap: 'wrap' }}>
-
+        <View style={{ flexDirection: 'row', marginHorizontal: 16, justifyContent: 'space-between', marginTop: 6, flex: 1, flexWrap: 'wrap', marginBottom : 150 }}>
           {
+            
             fdata.map((v, i) => (
-              <TouchableOpacity onPress={() => navigation.navigate('ProductDetails',{id:v.id})}>
+              <TouchableOpacity onPress={() => {
+                navigation.navigate('ProductDetails', {
+                  id: v.id
+                })
+              }}>
                 <ProductCard
                   key={v.id}
-                  imguri={v.images[0]}
-                  // title={v.description}
-                  mainTitle={v.title}
+                  imguri={v.image}
+                  title={v.Title}
+                  mainTitle={v.brand}
                   Dollar={v.price}
                 />
               </TouchableOpacity>
             ))
           }
-
         </View>
-
       </ScrollView>
-    </View >
+    </View>
   )
 }
-
 const style = StyleSheet.create({
   container: {
     width: '100%',

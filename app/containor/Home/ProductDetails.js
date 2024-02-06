@@ -7,16 +7,33 @@ import AppButton from '../../components/Button/AppButton';
 import LikeCard from '../../components/card/LikeCard';
 import { horizontalScale, moderateScale, verticalScale } from '../../Constant/Metrics';
 import { useRoute } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getproduct } from '../../redux/slice/ProductSlice';
 
-export default function ProductDetails({ navigation }) {
+export default function ProductDetails({ route, navigation }) {
+  // console.log('llllllllllllllllllllllllllllllllllllll', route.params.id);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getproduct());
+  }, [])
+  
+  const productData = useSelector(state => state.Product)
+  // console.log("999999999999999999999999999999",productData);
+
+
+  const filterData = productData.Product.filter((v) => v.id === route.params.id)
+  // console.log("44444444444444444444444444444444", filterData);
+
   const [model, Setmodel] = useState(false)
   const [products, setProducts] = useState([]);
   const [colormodel, Setcolormodel] = useState(false)
 
 
-  const route = useRoute()
-  const id = route.params?.id
-  console.log(id);
+  // const route = useRoute()
+  // const id = route.params?.id
+  // console.log(id);
 
   useEffect(() => {
     Getdata();
@@ -31,18 +48,10 @@ export default function ProductDetails({ navigation }) {
     setProducts(pdata);
   }
 
-
-
-
-  let fdata = products.filter((item) => item.id == id)
+  let fdata = products.filter((item) => item.id == route.params.id)
   console.log(fdata[0] && fdata[0].images);
 
   // return fdata;
-
-
-
-
-
 
   const handlepress = () => {
     Setmodel(true)
@@ -66,7 +75,7 @@ export default function ProductDetails({ navigation }) {
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
 
-        {
+        {/* {
           fdata[0] && fdata[0].images.map((v) => (
             <>
               <View style={style.imagebox}>
@@ -78,6 +87,19 @@ export default function ProductDetails({ navigation }) {
 
             </>
           ))
+        } */}
+
+        {
+          filterData.map((v, i) => {
+            return (
+              <View style={style.imagebox} key={i}>
+                <Image
+                  source={{ uri: v.image }}
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </View>
+            )
+          })
         }
 
 
@@ -99,24 +121,35 @@ export default function ProductDetails({ navigation }) {
           <TouchableOpacity style={style.likebox}>
             <Feather name="heart" color='black' size={20} />
           </TouchableOpacity>
-
-
-        </View>
-        <View style={style.textbox}>
-          <View ><Text style={{ fontSize: moderateScale(30), color: 'black' }}>H&M</Text></View>
-          <View style={{ marginLeft: 175 }}><Text style={{ fontSize: moderateScale(30), color: 'black' }}>$19.99</Text></View>
-        </View>
-        <Text style={{ color: 'grey' }}>Long White Dress</Text>
-        <View style={{ flexDirection: 'row', marginTop: verticalScale(5) }}>
-          <MaterialIcons name="star" color='#FFBA49' size={16} />
-          <MaterialIcons name="star" color='#FFBA49' size={16} />
-          <MaterialIcons name="star" color='#FFBA49' size={16} />
-          <MaterialIcons name="star" color='#FFBA49' size={16} />
-          <MaterialIcons name="star" color='#FFBA49' size={16} />
-          <Text style={{ color: 'grey' }}>(10)</Text>
         </View>
 
-        <Text style={{ fontSize: moderateScale(16), color: 'black', marginTop: 5 }}>Long dress in soft cottoon jerseyy with decoorative buttons down the front and a wide, frill-trimmed square neckline with concealed elastication. Elasticated seam under the bust and short puff sleeves with a small frill trim.</Text>
+        {
+          filterData.map((v) => {
+            return (
+              <View>
+                <View style={style.textbox}>
+                  <View ><Text style={{ fontSize: moderateScale(30), color: 'black' }}>{v.brand}</Text></View>
+                  <View style={{ marginLeft: 175 }}><Text style={{ fontSize: moderateScale(30), color: 'black' }}>{v.price}</Text></View>
+                </View>
+
+                <Text style={{ color: 'grey' }}>{v.Title}</Text>
+
+                <View style={{ flexDirection: 'row', marginTop: verticalScale(5) }}>
+                  <MaterialIcons name="star" color='#FFBA49' size={16} />
+                  <MaterialIcons name="star" color='#FFBA49' size={16} />
+                  <MaterialIcons name="star" color='#FFBA49' size={16} />
+                  <MaterialIcons name="star" color='#FFBA49' size={16} />
+                  <MaterialIcons name="star" color='#FFBA49' size={16} />
+                  <Text style={{ color: 'grey' }}>(10)</Text>
+                </View>
+
+                <Text style={{ fontSize: moderateScale(16), color: 'black', marginTop: 5 }}>{v.description}</Text>
+
+              </View>
+            )
+          })
+        }
+
       </View>
       <View style={{ width: '100%', height: 100, backgroundColor: 'white', padding: 30, marginTop: verticalScale(15) }}>
         <AppButton
@@ -259,10 +292,10 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     margin: 10
   },
-  size:{
+  size: {
     marginLeft: horizontalScale(30),
-     color: 'black', 
-     fontSize: moderateScale(15) 
+    color: 'black',
+    fontSize: moderateScale(15)
   },
   disbox: {
     width: '100%',

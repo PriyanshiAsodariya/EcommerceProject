@@ -3,13 +3,16 @@ import React from 'react'
 import { horizontalScale, moderateScale, verticalScale } from '../../Constant/Metrics'
 
 export default function Card({ imguri, title, mainTitle, Dollar, discount, disColor }) {
+    // console.log(imguri, 'lllllllllllllllllllllllllllllllllllll');
     return (
 
         <View style={style.parentBox}>
             <View style={style.box}>
                 <Image
                     style={style.image1}
-                    source={imguri}
+                    source={{
+                        uri: imguri,
+                      }}
                 />
                 <Pressable style={{ margin: 6, padding: 4, backgroundColor: disColor, width: verticalScale(30), position: 'absolute', borderRadius: 10 }}>
                     <Text style={{ fontSize: moderateScale(9), color: 'white', textAlign: 'center' }}>{discount}</Text>

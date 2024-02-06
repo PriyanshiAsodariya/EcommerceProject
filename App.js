@@ -7,22 +7,23 @@ import BottomTab from './app/routs/BottomTab';
 import Login from './app/containor/Login'
 import Password from './app/containor/Password'
 import ProductDetails from './app/containor/Home/ProductDetails';
+import { Provider } from 'react-redux';
+import { store } from './app/redux/store';
+
 
 
 export default class App extends Component {
     render() {
         return (
-             
 
-            <NavigationContainer>
-                   <BottomTab/>
-                   {/* <ProductDetails/> */}
-            </NavigationContainer>
+            <Provider store={store}>
 
-          
-            /* <SignUp/> */
-            // <Login/>
-            // <Password/>
+                <NavigationContainer>
+                    <BottomTab />
+                </NavigationContainer>
+             </Provider>
+
+
         )
     }
 }

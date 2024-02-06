@@ -17,7 +17,7 @@ export default function Card({imguri, title, mainTitle, Dollar, discount, disCol
 
                 </View>
                 <View style={style.deatilBox}>
-                    {/* <Text style={style.title}>{title}</Text> */}
+                    <Text style={style.title}>{title}</Text>
                     <Text style={style.mainTitle}>{mainTitle}</Text>
                     <Text style={style.Dollar}> {Dollar}</Text>
                 </View>

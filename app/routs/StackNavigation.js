@@ -330,7 +330,7 @@ export default function StackNavigation({ navigation }) {
 <Stack.Screen name='ProductDetails' component={ProductDetails}
   options={{
     // headerBackVisible : false,
-    headerTitle: 'long Dress',
+    // headerTitle: 'long Dress',
 
     headerLeft: () => (
       <CustomHeaderButton
