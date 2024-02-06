@@ -9,6 +9,8 @@ import { horizontalScale, moderateScale, verticalScale } from '../../Constant/Me
 import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getproduct } from '../../redux/slice/ProductSlice';
+import { addtoCart } from '../../redux/slice/cart.slice';
+
 
 export default function ProductDetails({ route, navigation }) {
   // console.log('llllllllllllllllllllllllllllllllllllll', route.params.id);
@@ -18,7 +20,7 @@ export default function ProductDetails({ route, navigation }) {
   useEffect(() => {
     dispatch(getproduct());
   }, [])
-  
+
   const productData = useSelector(state => state.Product)
   // console.log("999999999999999999999999999999",productData);
 
@@ -38,6 +40,12 @@ export default function ProductDetails({ route, navigation }) {
   useEffect(() => {
     Getdata();
   }, [])
+
+  const handleCart = (id) => {
+    dispatch(addtoCart(id))
+    console.log("iiiiiiiiiiiiiiiiiiddddddddddddddddddddddddddd", id);
+
+  }
 
 
   const Getdata = async () => {
@@ -154,7 +162,13 @@ export default function ProductDetails({ route, navigation }) {
       <View style={{ width: '100%', height: 100, backgroundColor: 'white', padding: 30, marginTop: verticalScale(15) }}>
         <AppButton
           titel="ADD TO CART"
-          onPress={() => navigation.navigate('Bag')}
+          onPress={() => {
+            filterData.map((v) => {
+              handleCart(v.id)
+              navigation.navigate('Bag')
+            })
+
+          }}
         />
       </View>
       <View style={{ width: '100%', height: verticalScale(50), borderWidth: 0.5, flexDirection: 'row' }}>
