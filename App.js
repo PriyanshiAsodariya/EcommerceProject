@@ -8,7 +8,8 @@ import Login from './app/containor/Login'
 import Password from './app/containor/Password'
 import ProductDetails from './app/containor/Home/ProductDetails';
 import { Provider } from 'react-redux';
-import { store } from './app/redux/store';
+import { persistor, store } from './app/redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 
 
@@ -17,11 +18,12 @@ export default class App extends Component {
         return (
 
             <Provider store={store}>
-
-                <NavigationContainer>
-                    <BottomTab />
-                </NavigationContainer>
-             </Provider>
+                <PersistGate loading={null} persistor={persistor}>
+                    <NavigationContainer>
+                        <BottomTab />
+                    </NavigationContainer>
+                </PersistGate>
+            </Provider>
 
 
         )

@@ -1,6 +1,6 @@
 import { View, Text, StatusBar, ScrollView, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppButton from '../../components/Button/AppButton';
@@ -10,10 +10,12 @@ import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getproduct } from '../../redux/slice/ProductSlice';
 import { addtoCart } from '../../redux/slice/cart.slice';
+import { addtoFavourite } from '../../redux/slice/favourite.slice';
 
 
 export default function ProductDetails({ route, navigation }) {
-  // console.log('llllllllllllllllllllllllllllllllllllll', route.params.id);
+
+  
 
   const dispatch = useDispatch();
 
@@ -22,16 +24,14 @@ export default function ProductDetails({ route, navigation }) {
   }, [])
 
   const productData = useSelector(state => state.Product)
-  // console.log("999999999999999999999999999999",productData);
-
 
   const filterData = productData.Product.filter((v) => v.id === route.params.id)
-  // console.log("44444444444444444444444444444444", filterData);
+
+  const favData = useSelector(state => state.favourite)
 
   const [model, Setmodel] = useState(false)
   const [products, setProducts] = useState([]);
   const [colormodel, Setcolormodel] = useState(false)
-
 
   // const route = useRoute()
   // const id = route.params?.id
@@ -44,7 +44,6 @@ export default function ProductDetails({ route, navigation }) {
   const handleCart = (id) => {
     dispatch(addtoCart(id))
     console.log("iiiiiiiiiiiiiiiiiiddddddddddddddddddddddddddd", id);
-
   }
 
 
@@ -60,7 +59,14 @@ export default function ProductDetails({ route, navigation }) {
   console.log(fdata[0] && fdata[0].images);
 
   // return fdata;
+  const hanldeActive = (id) => {
+    // if (!active) {
+      dispatch(addtoFavourite(id))
+    // }
+    // setactive(!active)
+    // console.log(id, "1111111111111111111111111");
 
+  }
   const handlepress = () => {
     Setmodel(true)
   }
@@ -83,19 +89,6 @@ export default function ProductDetails({ route, navigation }) {
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
 
-        {/* {
-          fdata[0] && fdata[0].images.map((v) => (
-            <>
-              <View style={style.imagebox}>
-                <Image
-                  source={{ uri: v }}
-                  style={{ width: '100%', height: '100%' }}
-                />
-              </View>
-
-            </>
-          ))
-        } */}
 
         {
           filterData.map((v, i) => {
@@ -124,11 +117,16 @@ export default function ProductDetails({ route, navigation }) {
             <Text style={{ marginLeft: horizontalScale(25), color: 'black', fontSize: moderateScale(15) }}>Color</Text>
           </TouchableOpacity>
 
+          {
+            filterData.map((v) => {
+              return (
+                <TouchableOpacity style={style.likebox} onPress={() => hanldeActive(v.id)}>
+                  <FontAwesome name={favData.favourite.includes(v.id) ? 'heart' : 'heart-o'} color={favData.favourite.includes(v.id) ?  'red' : 'black'} size={20} />
+                </TouchableOpacity>
+              )
 
-
-          <TouchableOpacity style={style.likebox}>
-            <Feather name="heart" color='black' size={20} />
-          </TouchableOpacity>
+            })
+          }
         </View>
 
         {

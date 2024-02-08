@@ -62,11 +62,16 @@ export default function ProductList({ navigation }) {
   const searchsortdata = () => {
     let fdata;
 
-    if (category) {
+    if(category === 'All'){
+      fdata = productData.Product.filter((v) => v.Category === cid)
+    }else if (category) {
       fdata = productData.Product.filter((v) => v.SubCategory === category)
-    } else {
+    } else if (sid) {
       fdata = productData.Product.filter((v) => v.SubCategory === sid)
+    } else{
+      fdata = productData.Product
     }
+
     fdata = fdata.filter((v) =>
       v.Title.toLowerCase().includes(search.toLowerCase()) ||
       v.description.toLowerCase().includes(search.toLowerCase()) ||
@@ -103,7 +108,7 @@ export default function ProductList({ navigation }) {
           <ShoppingButton
             // key={v.id}
             title={'All'}
-            onPress={() => setcategory('')}
+            onPress={() => setcategory('All')}
           />
 
           {
