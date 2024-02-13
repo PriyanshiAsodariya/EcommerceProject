@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const persistConfig = {
     key: 'root',
     storage : AsyncStorage,
-    whitelist : ['cart' , 'favourite' , 'crud']
+    whitelist : ['cart' , 'favourite' , 'crud', 'auth']
   }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

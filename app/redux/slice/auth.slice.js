@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 
 const initialState = {
     isLoading: false,
-    auth: [],
+    auth: null,
     error: null
 }
 
@@ -35,12 +35,14 @@ export const Loginwithemail = createAsyncThunk(
     'auth/Loginwithemail',
     async (data) => {
         console.log("ppppppppppppppppppppppppppppppppp", data);
-        await auth()
+        const user = await auth()
             .signInWithEmailAndPassword(data.email, data.password)
             .then((user) => {
                 console.log(user);
                 if (user.user.emailVerified) {
                     console.log('User account login in!');
+
+                    return user.user;
                 } else {
                     console.log("Please verify your email.");
                 }   
@@ -60,14 +62,19 @@ export const Loginwithemail = createAsyncThunk(
 
                 // console.error(error);
             });
+
+        return user;
     }
 )
 export const authslice = createSlice({
-    name: 'cart',
+    name: 'auth',
     initialState,
     reducers: {},
-    extraReducers: {
-
+    extraReducers: (builder) => {
+        builder.addCase(Loginwithemail.fulfilled, (state, action) => {
+            console.log("productttttt actionnnn ", action);
+            state.auth = action.payload
+        })
     }
 
 })
