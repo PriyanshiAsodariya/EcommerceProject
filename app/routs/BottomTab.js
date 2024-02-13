@@ -13,6 +13,9 @@ import  Foundation from 'react-native-vector-icons/Foundation';
 import StackNavigation from './StackNavigation';
 import Favourate from '../containor/Favourate/Favourite';
 import Counter from '../containor/Counter';
+import SignUp from '../containor/SignUp';
+import productCrud from '../containor/ProductCrud';
+import ProductCrud from '../containor/ProductCrud';
 
 
 
@@ -52,7 +55,8 @@ export default function BottomTab() {
         <Tab.Screen name="Cart" component={MyBag} options={{headerShown : false}}/>
         <Tab.Screen name="Favourate" component={Favourate} options={{headerShown : false}} />
         <Tab.Screen name="Profile" component={MyProfile} options={{headerShown : false}}/>
-        <Tab.Screen name="counter" component={Counter} options={{headerShown : false}}/>
+        {/* <Tab.Screen name="counter" component={SignUp} options={{headerShown : false}}/> */}
+          <Tab.Screen name="counter" component={ProductCrud} options={{headerShown : false}}/>
       </Tab.Navigator>
   )
 }

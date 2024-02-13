@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SignUp from '../containor/SignUp';
-import Login from '../containor/Login';
+// import SignUp from '../containor/SignUp';
+// import Login from '../containor/Login';
 import Product from '../containor/Home/Product';
 import Categories from '../containor/Home/Categories';
 import ProductDetails from '../containor/Home/ProductDetails';
@@ -17,6 +17,11 @@ import MyOrder from '../containor/Profile/MyOrder';
 import Feather from 'react-native-vector-icons/Feather';
 import Filter from '../containor/Home/Filter';
 import reactNativeConfig from '../../react-native.config';
+import Login from '../containor/Login';
+import SignUp from '../containor/SignUp';
+import password from '../containor/Password';
+import productCrud from '../containor/ProductCrud';
+import ProductCrud from '../containor/ProductCrud';
 
 
 const Stack = createNativeStackNavigator();
@@ -312,85 +317,94 @@ export default function StackNavigation({ navigation }) {
     <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen name="Product" component={Product} options={{ headerShown: false }} />
 
-<Stack.Screen name='ProductList' component={ProductList}
-  options={{ headerTitleAlign: 'center',
-  headerTitle : 'Womens Tops',
-  headerLeft: () => (
-    <CustomHeaderButton
-      icon='chevron-left'
-      onclick={() => {
-        navigation.goBack();
-      }}
-    />
-  ), }}
-  />
+      <Stack.Screen name='ProductList' component={ProductList}
+        options={{
+          headerTitleAlign: 'center',
+          headerTitle: 'Womens Tops',
+          headerLeft: () => (
+            <CustomHeaderButton
+              icon='chevron-left'
+              onclick={() => {
+                navigation.goBack();
+              }}
+            />
+          ),
+        }}
+      />
 
       <Stack.Screen name='Categories' component={Categories}
         options={{ headerTitleAlign: 'center' }} />
-<Stack.Screen name='ProductDetails' component={ProductDetails}
-  options={{
-    // headerBackVisible : false,
-    // headerTitle: 'long Dress',
+      <Stack.Screen name='ProductDetails' component={ProductDetails}
+        options={{
+          // headerBackVisible : false,
+          // headerTitle: 'long Dress',
 
-    headerLeft: () => (
-      <CustomHeaderButton
-        icon='chevron-left'
-        onclick={() => {
-          navigation.goBack();
+          headerLeft: () => (
+            <CustomHeaderButton
+              icon='chevron-left'
+              onclick={() => {
+                navigation.goBack();
+              }}
+            />
+          ),
         }}
       />
-    ),
-  }}
-/>
       <Stack.Screen name='Bag' component={MyBag}
         options={{ headerShown: false }}
       />
       <Stack.Screen name='Favourite' component={Favourite}
         options={{ headerShown: false }} />
-<Stack.Screen name='Profile' component={MyProfile}
-  options={{ headerShown: false }}
-/>
+      <Stack.Screen name='Profile' component={MyProfile}
+        options={{ headerShown: false }}
+      />
 
-<Stack.Screen name='Payment' component={Payment}
-  options={{ headerTitle: 'Checkout', headerTitleAlign: 'center' }} />
-<Stack.Screen name='Success' component={Success}
-options={{
-  headerLeft: () => (
-    <CustomHeaderButton
-      icon='chevron-left'
-      onclick={() => {
-        navigation.goBack();
-      }}
-    />
-  ),
-}}
- />
-<Stack.Screen name='Address' component={Address} options={{
-  headerTitleAlign: 'center',
-  headerTitle: 'Adding Shipping Adress' ,
-  headerLeft: () => (
-    <CustomHeaderButton
-      icon='chevron-left'
-      onclick={() => {
-        navigation.goBack();
-      }}
-    />
-  ),
+      <Stack.Screen name='Payment' component={Payment}
+        options={{ headerTitle: 'Checkout', headerTitleAlign: 'center' }} />
+      <Stack.Screen name='Success' component={Success}
+        options={{
+          headerLeft: () => (
+            <CustomHeaderButton
+              icon='chevron-left'
+              onclick={() => {
+                navigation.goBack();
+              }}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen name='Address' component={Address} options={{
+        headerTitleAlign: 'center',
+        headerTitle: 'Adding Shipping Adress',
+        headerLeft: () => (
+          <CustomHeaderButton
+            icon='chevron-left'
+            onclick={() => {
+              navigation.goBack();
+            }}
+          />
+        ),
 
-  }} />
-<Stack.Screen name='Order' component={MyOrder}
-options={{
-  headerLeft: () => (
-    <CustomHeaderButton
-      icon='chevron-left'
-      onclick={() => {
-        navigation.goBack();
-      }}
-    />
-  ),
-}} />
-      <Stack.Screen name='Filter' component={Filter}/>
-
+      }} />
+      <Stack.Screen name='Order' component={MyOrder}
+        options={{
+          headerLeft: () => (
+            <CustomHeaderButton
+              icon='chevron-left'
+              onclick={() => {
+                navigation.goBack();
+              }}
+            />
+          ),
+        }} />
+      <Stack.Screen name='Filter' component={Filter} />
+      <Stack.Screen name='Login' component={Login} options={{
+        headerShown: false
+      }} />
+      <Stack.Screen name='SignUp' component={SignUp} />
+      <Stack.Screen name='productCrud' component={ProductCrud} />
+      {/* <Stack.Screen name='password' component={password} options={{
+        headerShown: false
+      }} /> */}
     </Stack.Navigator>
   )
 }

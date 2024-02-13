@@ -23,6 +23,9 @@ export default function ProductList({ navigation }) {
   const route = useRoute();
   const sid = route.params?.id
   const cid = route.params?.cid
+  const catID = route.params?.categoryId;
+  const productId = route.params?.proId;
+  const SaleID = route.params?.SaleId;
 
   const dispatch = useDispatch();
 
@@ -34,9 +37,6 @@ export default function ProductList({ navigation }) {
   const SubCategoryData = useSelector(state => state.subcategory)
   const productData = useSelector(state => state.Product)
   // console.log("7777777777777777777777",productData );
-
-
-
 
   const handlepress = () => {
     setmodel(true)
@@ -61,14 +61,28 @@ export default function ProductList({ navigation }) {
 
   const searchsortdata = () => {
     let fdata;
+    const tempArr = [...productData.Product]
 
-    if(category === 'All'){
+    const saleData = productData.Product.filter((v) => v.discount >= 25)
+
+
+    if (category === 'All') {
       fdata = productData.Product.filter((v) => v.Category === cid)
-    }else if (category) {
+    } else if (category) {
       fdata = productData.Product.filter((v) => v.SubCategory === category)
     } else if (sid) {
       fdata = productData.Product.filter((v) => v.SubCategory === sid)
-    } else{
+    } else if (catID) {
+      fdata = productData.Product.filter((v) => v.Category === catID)
+    } else if (productId) {
+      fdata = tempArr.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      })
+    } else if (SaleID) {
+      fdata = saleData.sort((a, b) => {
+        return a.discount - b.discount;
+      })
+    } else {
       fdata = productData.Product
     }
 
@@ -89,11 +103,6 @@ export default function ProductList({ navigation }) {
         return b.Title.localeCompare(a.Title)
       }
     })
-
-    // if (category === '') {
-    //   setSid(category);
-    // }
-    
 
     return fdata;
   }
@@ -179,9 +188,9 @@ export default function ProductList({ navigation }) {
 
 
       <ScrollView>
-        <View style={{ flexDirection: 'row', marginHorizontal: 16, justifyContent: 'space-between', marginTop: 6, flex: 1, flexWrap: 'wrap', marginBottom : 150 }}>
+        <View style={{ flexDirection: 'row', marginHorizontal: 16, justifyContent: 'space-between', marginTop: 6, flex: 1, flexWrap: 'wrap', marginBottom: 150 }}>
           {
-            
+
             fdata.map((v, i) => (
               <TouchableOpacity onPress={() => {
                 navigation.navigate('ProductDetails', {

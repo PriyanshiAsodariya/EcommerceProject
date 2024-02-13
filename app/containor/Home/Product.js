@@ -5,6 +5,7 @@ import { horizontalScale, moderateScale, verticalScale } from '../../Constant/Me
 import { useDispatch, useSelector } from 'react-redux'
 import { getproduct } from '../../redux/slice/ProductSlice'
 import { getCategoryData } from '../../redux/slice/CategorySlice'
+import ProductList from './ProductList'
 
 
 export default function Product({ navigation }) {
@@ -22,14 +23,29 @@ export default function Product({ navigation }) {
   const tempArr = [...productdata.Product]
 
   const sortProductData = tempArr.sort((a, b) => {
-    return new Date(a.createdAt) - new Date(b.createdAt);
-  }).slice(0, 4)
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  }).slice(0, 5)
 
   console.log(sortProductData);
-
   const saleData = productdata.Product.filter((v) => v.discount >= 20)
   // console.log("diiiiiiisssssccccooouuuunnntttt", saleData);
 
+  const handleCheck = (id) => {
+
+    categoryData.Category.map((v) => {
+      if (v.id == 'kAJW5yPHWiGAZArkpJcF') {
+        navigation.navigate('ProductList', { categoryId: 'kAJW5yPHWiGAZArkpJcF' })
+      }
+    })
+  }
+  const handleNew = (id) =>{
+    console.log("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",id);
+    navigation.navigate('ProductList', {proId : id});
+  }
+
+  const handleSale = (id) =>{
+    navigation.navigate('ProductList', { SaleId: id });
+  }
 
   return (
     <View style={style.containor}>
@@ -41,31 +57,34 @@ export default function Product({ navigation }) {
           style={{ position: 'relative', width: '100%', height: verticalScale(550), }}
           source={require('../../../assets/Images/longDress1.jpg')}
         />
-
-
         <View style={{ position: 'absolute', }}>
-
 
           <Text style={{ color: 'white', marginTop: verticalScale(310), fontSize: moderateScale(50), marginHorizontal: 16, fontWeight: '500' }}>Fashion</Text>
           <Text style={{ color: 'white', fontSize: moderateScale(50), marginHorizontal: 16 }}>Sale</Text>
-          <Pressable
+
+          <TouchableOpacity
             style={{ backgroundColor: '#DB3022', marginHorizontal: 16, padding: 10, fontWeight: '500', borderRadius: 20, marginTop: verticalScale(20) }}
-            onPress={() => { }}>
+            onPress={() => { handleCheck() }}>
             <Text style={{ color: 'white', textAlign: 'center', }}>Check</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
 
         <View style={{ position: 'relative', marginTop: 12 }}>
           <Text style={style.text}>New</Text>
           <Text style={style.subhead}>You’ve never seen it before!</Text>
-          <Text style={{ position: 'absolute', color: 'black', marginLeft: horizontalScale(300), marginTop: verticalScale(35) }}>View all</Text>
+          <TouchableOpacity onPress={()=>{
+            productdata.Product.map((v)=>{
+              handleNew(v.id)
+            })
+          }}>
+            <Text style={{ color: 'black', marginLeft: 300, marginTop: verticalScale(35) }}>View all</Text>
+          </TouchableOpacity>
         </View>
 
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
         >
-
           {
             sortProductData.map((v, i) => {
               // console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv",v.image);
@@ -93,11 +112,20 @@ export default function Product({ navigation }) {
         {/* //--------------------------------------------------------------------------------------------- */}
 
 
-        <View style={{ flex: 1, marginTop: verticalScale(30) }}>
+        <View style={{ marginTop: verticalScale(30) }}>
           <Text style={style.text}>Sale</Text>
           <Text style={style.subhead}>Super Summer Sale</Text>
-          <Text style={{ position: 'absolute', color: 'black', marginLeft: 300, marginTop: verticalScale(35) }}>View all</Text>
+
+          <TouchableOpacity onPress={() => {
+            productdata.Product.map((v)=>{
+              handleSale(v.id)
+            })
+          }}>
+            <Text style={{ color: 'black', marginLeft: 300, marginTop: verticalScale(35) }}>View all</Text>
+          </TouchableOpacity>
         </View>
+
+
 
         <ScrollView
           horizontal={true}
@@ -127,7 +155,7 @@ export default function Product({ navigation }) {
           {
             categoryData.Category.map((v, i) => {
               return (
-                <TouchableOpacity onPress={() => navigation.navigate('Categories',{id : v.id})} style={style[`category${i % 3 + 1}`]}>
+                <TouchableOpacity onPress={() => navigation.navigate('Categories', { id: v.id })} style={style[`category${i % 3 + 1}`]}>
                   <Image style={style.imgBox} source={{ uri: v.image }} />
                   <Text style={style.categoryName}>{v.Category}</Text>
                 </TouchableOpacity>
@@ -137,57 +165,6 @@ export default function Product({ navigation }) {
         </View>
 
 
-        {/* <TouchableOpacity style={style.category2}>
-                  <Image source={''} />
-                  <Text></Text>
-                </TouchableOpacity>
-
-
-                <TouchableOpacity style={style.category3}>
-                  <Image source={''} />
-                  <Text></Text>
-                </TouchableOpacity> */}
-
-
-        {/* <TouchableOpacity onPress={() => navigation.navigate('Categories')}>
-          <Image
-            style={{ marginTop: verticalScale(20) }}
-            source={require('../../../assets/Images/main.png')}
-          />
-          <Text style={{ color: 'white', position: 'absolute', marginTop: 1580, fontSize: 30, marginLeft: 135 }}>New Collection</Text>
-        </TouchableOpacity> */}
-
-
-        {/* <View style={style.collectionBox}>
-
-          <View style={{ width: horizontalScale(180), height: verticalScale(380) }}>
-            <TouchableOpacity onPress={() => navigation.navigate('Categories')}>
-              <View style={{ width: 180, height: 170, }}>
-                <Text style={{ color: '#DB3022', fontSize: moderateScale(35), marginTop: verticalScale(35), marginLeft: horizontalScale(16) }}>Summer </Text>
-                <Text style={{ color: '#DB3022', fontSize: moderateScale(35), marginLeft: verticalScale(16) }}>Sale </Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => navigation.navigate('Categories')}>
-              <View style={{ width: horizontalScale(170), height: verticalScale(200) }}>
-                <Image
-                  style={{ width: horizontalScale(180), height: verticalScale(200) }}
-                  source={require('../../../assets/Images/Black.png')}
-                />
-                <Text style={{ position: 'absolute', color: 'white', left: 0, bottom: 0, marginBottom: verticalScale(16), marginHorizontal: 16, fontSize: moderateScale(35) }}>Black</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity onPress={() => navigation.navigate('Categories')}>
-            <View style={{ width: horizontalScale(200), height: verticalScale(384), }}>
-              <Image
-                style={{ width: "100%", height: "100%" }}
-                source={require("../../../assets/Images/mensHoodie.png")}
-              />
-            </View>
-          </TouchableOpacity>
-        </View> */}
 
       </ScrollView>
     </View>
