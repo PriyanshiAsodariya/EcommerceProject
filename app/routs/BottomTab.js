@@ -55,8 +55,8 @@ export default function BottomTab() {
         <Tab.Screen name="Cart" component={MyBag} options={{headerShown : false}}/>
         <Tab.Screen name="Favourate" component={Favourate} options={{headerShown : false}} />
         <Tab.Screen name="Profile" component={MyProfile} options={{headerShown : false}}/>
-        {/* <Tab.Screen name="counter" component={SignUp} options={{headerShown : false}}/> */}
-          <Tab.Screen name="counter" component={ProductCrud} options={{headerShown : false}}/>
+        <Tab.Screen name="counter" component={SignUp} options={{headerShown : false}}/>
+          {/* <Tab.Screen name="counter" component={ProductCrud} options={{headerShown : false}}/> */}
       </Tab.Navigator>
   )
 }
